@@ -1,4 +1,6 @@
 const { MongoClient } = require('mongodb');
+const mongoose = require('mongoose');
+
 
 const {
     MONGO_HOST,
@@ -15,12 +17,13 @@ if (MONGO_LOCAL === 'true') {
   MONGO_URI = `mongodb://${MONGO_HOST}:${MONGO_PORT}/${MONGO_DBNAME}`;
 }
 
-console.log(MONGO_URI);
+const conn = mongoose.connect(MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}).then(() => {
+  console.log('Connected to MongoDB');
 
-const client = new MongoClient(MONGO_URI);
-const db = client.db();
+}).catch(err => {
+  console.error('Error connecting to MongoDB:', err);
+});
 
-module.exports = {
-    client,
-    db,
-  };

@@ -1,30 +1,31 @@
 // Import the necessary modules
-const { db } = require('../db');
-const ObjectId = require("mongodb").ObjectId; 
-const collection = db.collection('filmsCollection');
-// Define the controller function
+const Film = require('../models/Film');
+
+// Define the controller functions
 async function getAllData() {
   try {
-    // Query the collection to retrieve all documents
-    const films = await collection.find().toArray();
+    // Query the collection to retrieve all films
+    const films = await Film.find();
+    console.dir(Film);
     return films;
   } catch (error) {
     console.error('Error retrieving data:', error);
-    return({ error: 'Failed to retrieve data' });
+    return { error: 'Failed to retrieve data' };
   }
 }
+
 async function getDataById(id) {
   try {
-    // Query the collection to retrieve a document by ID
-    let o_id = new ObjectId(id);
-    const film  = await collection.find({ _id: o_id }).toArray();
+    // Query the collection to retrieve a film by ID
+    const film = await Film.findById(id);
     return film;
   } catch (error) {
     console.error('Error retrieving data:', error);
-    return({ error: 'Failed to retrieve data' });
+    return { error: 'Failed to retrieve data' };
   }
 }
-// Export the controller function
+
+// Export the controller functions
 module.exports = {
   getAllData,
   getDataById
